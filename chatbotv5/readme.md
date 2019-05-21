@@ -31,6 +31,3 @@ WARN：词汇不在服务区
 > 傻逼
 他妈 逼 的
 </pre>
-
-## 代码讲解
-欢迎关注[www.shareditor.com](http://www.shareditor.com/)最新文章
