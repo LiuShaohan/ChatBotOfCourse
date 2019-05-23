@@ -5,7 +5,7 @@ import sys
 import numpy as np
 import tensorflow as tf
 from tensorflow.contrib.legacy_seq2seq.python.ops import seq2seq
-import chatbotv5.word_token as word_token
+import word_token as word_token
 import jieba
 import random
 
@@ -203,18 +203,19 @@ def train():
 
                 # 模型持久化
                 saver.save(sess, './model/demo')
+                return "训练结束了~~"
 
 
-def predict():
+def predict(req_msg):
     """
     预测过程
     """
     with tf.Session(config=config) as sess:
         encoder_inputs, decoder_inputs, target_weights, outputs, loss, update, saver, learning_rate_decay_op, learning_rate = get_model(feed_previous=True)
         saver.restore(sess, './model/demo')
-        sys.stdout.write("> ")
-        sys.stdout.flush()
-        input_seq = sys.stdin.readline()
+        #sys.stdout.write("> ")
+        #sys.stdout.flush()
+        input_seq = req_msg #sys.stdin.readline()
         while input_seq:
             input_seq = input_seq.strip()
             input_id_list = get_id_list_from(input_seq)
@@ -237,17 +238,11 @@ def predict():
                 if EOS_ID in outputs_seq:
                     outputs_seq = outputs_seq[:outputs_seq.index(EOS_ID)]
                 outputs_seq = [wordToken.id2word(v) for v in outputs_seq]
-                print(" ".join(outputs_seq))
+                return " ".join(outputs_seq)
+                #print(" ".join(outputs_seq))
             else:
-                print("你在说啥呢？")
+                return "你在说啥呢？" #print("你在说啥呢？")
 
-            sys.stdout.write("> ")
-            sys.stdout.flush()
-            input_seq = sys.stdin.readline()
-
-
-if __name__ == "__main__":
-    # if sys.argv[1] == 'train':
-    # train()
-    #else:
-    predict()
+            #sys.stdout.write("> ")
+            #sys.stdout.flush()
+            # input_seq = sys.stdin.readline()
